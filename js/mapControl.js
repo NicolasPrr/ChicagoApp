@@ -7,6 +7,8 @@ var thistest ="test ome";
 var mainMarker;
 var markerSelect;
 var selectOn = 0;
+var directionsService; //= new google.maps.DirectionsService;
+var directionsDisplay ;//= new google.maps.DirectionsRenderer;
 function myMap() {
 
   var location = {lat: 41.8708, lng:-87.6505 }  
@@ -26,6 +28,8 @@ mainMarker = new google.maps.Marker({
   icon: image
 
 });
+directionsService = new google.maps.DirectionsService;
+directionsDisplay = new google.maps.DirectionsRenderer;
  /*marker.addListener('click', function() {
           alert("aiuda");
         });
@@ -114,23 +118,23 @@ function loadRentsMarks(){
          // alert(markerSelect.getPosition());
          distance(this.getPosition(), mainMarker.getPosition());
          distanceD(this.getPosition(), mainMarker.getPosition());
-         
+         displayRouteDriving(this.getPosition(),mainMarker.getPosition());
         // markerSelect.setIcon(image);
          //markerSelect = this;
          black = "styles/icons/Hotel/black/bed_b.png";
         // this.setIcon(black) ;
-         
-         if(selectOn == 0){
+        x
+        if(selectOn == 0){
           markerSelect = this;
-           markerSelect.setIcon(black);
-            selectOn = 1;
-         }else{
+          markerSelect.setIcon(black);
+          selectOn = 1;
+        }else{
           markerSelect.setIcon(image);
           markerSelect = this;
           markerSelect.setIcon(black);
-         }
+        }
 
-       });
+      });
 
         //  alert(myarray[i].get("title"));
         
@@ -196,8 +200,8 @@ function distance(originS, destinationS){
 
 
   }
-function distanceD(originS, destinationS){
- 
+  function distanceD(originS, destinationS){
+
   //Find the distance
     var origin1 = originS; //{lat: 55.93, lng: -3.118} ;
     var destinationA = destinationS;
@@ -218,8 +222,6 @@ function distanceD(originS, destinationS){
         console.log(response.rows[0].elements.distance);
         var dur = response.rows[0].elements[0].duration.text;
         document.getElementById("textDriveTime").innerHTML = "Driving time: " + dur ; 
-        
-        
             //alert("response" + response.rows[0].elements[0].duration.text );
             //alert("response" + response.rows[0].elements[0].distance.text );
            //$("#distance").text(response.rows[0].elements[0].distance.text).show();
@@ -230,4 +232,32 @@ function distanceD(originS, destinationS){
 
 
   }
+  function displayRouteDriving(originS, destinationS){
+  //Find the distance
+  directionsDisplay.setMap(map);
+  directionsDisplay.setOptions( { suppressMarkers: true } ); 
+  //directionsDisplay.setOptions( { polylineOptions: { strokeColor: "gray" } } );
+  // quita los marcadores que autmaticamente ponen
+  directionsService.route({
+    origin: originS,
+    destination: destinationS,
+    travelMode: google.maps.TravelMode.DRIVING,
+
+  },
+  function (response, status) {
+    if (status !== google.maps.DirectionsStatus.OK) {
+      console.log('Error:', status);
+    } else {
+      directionsDisplay.setDirections(response);
+
+    }
+
+
+
+  }
+
+
+  );
+
+}
 
