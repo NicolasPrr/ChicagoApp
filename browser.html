@@ -8,85 +8,115 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="js/mapControl.js"></script>
 
   <link rel="stylesheet" type="text/css" href="styles/stylesLoginf.css">
+  <link rel="stylesheet" type="text/css" href="styles/responsive.css">
+  <link rel="stylesheet" type="text/css" href="styles/buttons.css">
 
 
-  <style>
-  .carousel-inner > .item > img,
-  .carousel-inner > .item > a > img {
+  <style>x
+    .carousel-inner > .item > img,
+    .carousel-inner > .item > a > img {
       width: 70%;
       margin: auto;
-  }
+    }
   </style>
 </head>
 <body>
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Chicago browser</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="main.html">Home</a></li>
-      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">options<span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="#">Page 1</a></li>
-        </ul>
-      </li>
-      
-    </ul>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Chicago browser</a>
       </div>
-</nav>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="main.html">Home</a></li>
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">options<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Page 1</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    <div id="map_container">
+      <div id="googleMap" ></div>    
+    </div>
+  </div>
+  <script type="text/javascript"  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDO3BlysYt5W2YxWN6ohNE0ep5XKjnuWnU&callback=myMap&libraries=places&v=3"></script>
+  <script>
+
+
+  </script>
   
-  <div id="googleMap" style="width:100%;height:400px;"></div>
-<script>
-function myMap() {
-var location = {lat: 40.104299, lng:-88.224989 }  
-var mapProp= {
-    center:new google.maps.LatLng(40.104299,-88.224989),
-    zoom:12,
-};
-  var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+  <div style ="text-align: center;"> 
 
-  var marker = new google.maps.Marker({
-    position: location,
-    map: map
-  });
-}
-</script>
+    <button type="button" class="button button2"  >Click to find!</button>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA96URCCw9sXnZmv3D35yCl6yaf6YdCnE&callback=myMap"></script>
+  </div>
+  <div class="row">
+    <div class="col-2"> 
+      <div class="ContentCheckBox">
+          <p>Graphic</p>        
+      </div>
 
-  
-<div style ="text-align: center;"> 
-<a href="browser.html">
-  <button type="button" class="button button2">Click to find!</button>
-  </a>
-</div>
+    </div> 
+    <div  class = "col-6">
+      <div class = "ContentCheckBox">
+        <p><b>Select options.</b></p>
+        <div class ="columnsCheckBox">
+          <input type="checkbox" name="parkings" value="parking"  > Show parkings  <br>
+          <input type="checkbox" id="test_id" name="rents" value="rent" onclick="checkRent(myarray, this);" checked ="true  " > Show rents  <br>
+          <input type="checkbox" name="parks" value="park"> Show parks  <br>
+          <input type="checkbox" name="parks" value="park"> Show parks  <br>
 
-<div style ="text-align: center;"> 
+        </div>
 
-  <h1>we can help to  find the house that you need</h1>
+      </div>
 
-</div>
+    </div>
+    <div class = "col-4">
+      <div class= "ContentCheckBox" style= " text-align: left;  padding: 10px" >
+        <p id ="textAddress">Address: </p>
+        <p id ="textPhone">Phone:</p>
+        <p id ="textProperty">Property name:</p>
+        <p id ="textCompañy">compañy:</p>
+        <p id ="textType">property type: </p>
+        <p id ="textDistance">Distance:</p>
+        <p id ="textWalkTime">Walking time:</p>
+       <p id ="textDriveTime">Driving time:</p>
+      </div>
 
-<div class="flex-container">
-<p style="text-align: center">you can find some house of rent According to your needs</p>
-</div>
-<div class="flex-container">
-<p style="text-align: center">
-free service</p>
-</div>
-<div class="flex-container">
-  <footer>Chigaco Browser <br>
-  2017  
-  </footer>
-</div>
 
-</body>
-</html>
+    </div>
+
+  </div> 
+  <p id = 'demo'> </p>
+
+  <div style ="text-align: center; color:  #B9DBE6"> 
+
+    <h1>we can help to  find the house that you need</h1>
+
+  </div>
+
+  <div class="flex-container">
+    <p style="text-align: center; color:  #B9DBE6 ">you can find some house of rent according to your needs</p>
+  </div>
+  <div class="flex-container ">
+    <p style="text-align: center; color:  #B9DBE6">
+      free service</p>
+    </div>
+
+    <div class ="myfooter">
+     <p> 2017 </p>  
+
+   </div>
+
+ </body>
+ </html>
 
 
 
