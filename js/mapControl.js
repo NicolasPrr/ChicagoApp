@@ -113,12 +113,17 @@ function loadRentsMarks(){
         myarray.push(mark);
         mark.addListener('click', function() {
          // alert(" get position " +mainMarker.getPosition());
-         document.getElementById("textAddress").innerHTML = "Address: " + this.get("address") ; 
-         document.getElementById("textPhone").innerHTML = "Phone: " + this.get("phone") ; 
-         document.getElementById("textProperty").innerHTML = "property name: " + this.get("property_name") ; 
-         document.getElementById("textCompañy").innerHTML = "Compañy: " + this.get("company") ; 
-         document.getElementById("textType").innerHTML = "property type: " + this.get("property_type") ; 
-         // alert(markerSelect.getPosition());
+         var ad  =  "Address: " + this.get("address") ; 
+         var pho =  "Phone: " + this.get("phone") ; 
+         var proN = "property name: " + this.get("property_name") ; 
+         var comp = "Compañy: " + this.get("company") ; 
+         var typ =  "property type: " + this.get("property_type") ; 
+         var contentS = "<div><p>" + ad + "<br>" + pho + "<br>" + proN + "<br>" + comp +"<br>"+ typ + "</p></div>";
+         //alert(content);          // alert(markerSelect.getPosition());
+         var infowindow = new google.maps.InfoWindow({
+          content: contentS
+        });
+         infowindow.open(map, this);
          distance(this.getPosition(), mainMarker.getPosition());
          distanceD(this.getPosition(), mainMarker.getPosition());
          displayRouteDriving(this.getPosition(),mainMarker.getPosition());
@@ -126,7 +131,7 @@ function loadRentsMarks(){
          //markerSelect = this;
          black = "styles/icons/Hotel/black/bed_b.png";
         // this.setIcon(black) ;
-        x
+        
         if(selectOn == 0){
           markerSelect = this;
           markerSelect.setIcon(black);
