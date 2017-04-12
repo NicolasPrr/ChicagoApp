@@ -11,12 +11,13 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="js/mapControl.js"></script>
 
+
+  <link href="https://fonts.googleapis.com/css?family=Share:700" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="styles/stylesLoginf.css">
   <link rel="stylesheet" type="text/css" href="styles/responsive.css">
   <link rel="stylesheet" type="text/css" href="styles/buttons.css">
-
-
-  <style>x
+  <link rel="stylesheet" type="text/css" href="styles/leftColumn.css">
+  <style>
     .carousel-inner > .item > img,
     .carousel-inner > .item > a > img {
       width: 70%;
@@ -37,21 +38,50 @@
             <li><a href="#">Page 1</a></li>
           </ul>
         </li>
-
       </ul>
     </div>
   </nav>
-  <div class="container">
-    <div id="map_container">
-      <div id="googleMap" ></div>    
+
+
+  <div class = "container-fluid text-center">
+    <div class ="row content">
+      <div class="col-sm-2 sidenav">
+        <p>This just a test</p>  
+        <button id ="rentButton" class="button buttonMarker" onclick="buttonRentF();">
+          
+         <button id ="parkButton" class="button buttonMarker">
+          <dd>Hola maria</dd>
+          <button id ="retButton" class="button buttonMarker">
+          <dd>Hola maria</dd>
+          <button id ="renutton" class="button buttonMarker">
+          <dd>Hola maria</dd> 
+        </button>
+      
+
+
+      </div>
+      <div class ="col-sm-8 text-left">
+
+        <div class="container">
+          <div id="map_container">
+            <div id="googleMap" ></div>    
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2 sidenav text-left">
+        <p>This just a test</p>      
+      </div>
+
+
     </div>
   </div>
+
   <script type="text/javascript"  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDO3BlysYt5W2YxWN6ohNE0ep5XKjnuWnU&callback=myMap&libraries=places&v=3"></script>
   <script>
 
 
   </script>
-  
+
   <div style ="text-align: center;"> 
 
     <button type="button" class="button button2"  >Click to find!</button>
@@ -60,14 +90,13 @@
   <div class="row">
     <div class="col-2"> 
       <div class="ContentCheckBox">
-          <p>Graphic</p>        
+        <p>Graphic</p>        
       </div>
 
     </div> 
     <div  class = "col-6">
-      <div class = "ContentCheckBox">
+    <div class = "ContentCheckBox">
         <p><b>Select options.</b></p>
-        <div class ="columnsCheckBox">
           <input type="checkbox" name="parkings" value="parking"  > Show parkings  <br>
           <input type="checkbox" id="test_id" name="rents" value="rent" onclick="checkRent(myarray, this);" checked ="true  " > Show rents  <br>
           <input type="checkbox" name="parks" value="park"> Show parks  <br>
@@ -75,7 +104,7 @@
 
         </div>
 
-      </div>
+
 
     </div>
     <div class = "col-4">
@@ -87,7 +116,7 @@
         <p id ="textType">property type: </p>
         <p id ="textDistance">Distance:</p>
         <p id ="textWalkTime">Walking time:</p>
-       <p id ="textDriveTime">Driving time:</p>
+        <p id ="textDriveTime">Driving time:</p>
       </div>
 
 

@@ -10,6 +10,9 @@ var selectOn = 0;
 var directionsService; //= new google.maps.DirectionsService;
 var directionsDisplay ;//= new google.maps.DirectionsRenderer;
 function myMap() {
+  var elem = document.getElementById("rentButton");
+  elem.style.backgroundColor = "#F3F3F3";
+  elem.innerHTML  = "<dd>Hide rents</dd>"
 
   var location = {lat: 41.8708, lng:-87.6505 }  
  //document.getElementById("checkRentBox").checked = true;
@@ -255,9 +258,22 @@ function distance(originS, destinationS){
 
 
   }
-
-
   );
+
+}
+function buttonRentF(){
+  var elem = document.getElementById("rentButton");
+  //alert(elem.style.backgroundColor + myarray.length);
+  if( elem.style.backgroundColor == 'rgb(243, 243, 243)' ){
+    //alert("ome");
+    deleteMarkers(myarray);
+    elem.style.backgroundColor = "#FFCD38";
+    elem.innerHTML = "<dd>Show rents</dd>"
+  }else{
+    elem.style.backgroundColor = "#F3F3F3" ;
+    elem.innerHTML = "<dd>hide rents</dd>"
+    showMarkers(myarray);
+  }  
 
 }
 
