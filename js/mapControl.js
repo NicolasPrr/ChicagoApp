@@ -8,7 +8,10 @@ var mainMarker;
 var markerSelect;
 var selectOn = 0;
 var directionsService; //= new google.maps.DirectionsService;
-var directionsDisplay ;//= new google.maps.DirectionsRenderer;
+var directionsDisplay = [];//= new google.maps.DirectionsRenderer;
+var infowindow;
+var ch;
+var m;
 function myMap() {
   var elem = document.getElementById("rentButton");
   elem.style.backgroundColor = "#F3F3F3";
@@ -32,7 +35,10 @@ mainMarker = new google.maps.Marker({
 
 });
 directionsService = new google.maps.DirectionsService;
-directionsDisplay = new google.maps.DirectionsRenderer;
+for(i = 0 ; i < 4; i++){
+  directionsDisplay[i] = new google.maps.DirectionsRenderer;  
+}
+
  /*marker.addListener('click', function() {
           alert("aiuda");
         });
@@ -40,7 +46,11 @@ directionsDisplay = new google.maps.DirectionsRenderer;
 //  google.maps.event.addListener(marker, 'click', function(){alert("sa");});
 
 //  var checkbox = document.getElementById("rentCheckBox").addEventListener("click",deleteMarkers);
+//alert(ch.length);
+
+
 loadRentsMarks();
+
   //alert("myarray.length :"   +  myarray.length);
 // setTimeout( function ( ) { alert("size1 : " +  myarray.length);  }, 1000 );
 
@@ -79,6 +89,11 @@ function loadRentsMarks(){
      var i;
      var x = xmlDoc.getElementsByTagName("row");
     // var ya = x.getElementsByTagName("latitude");
+    ch = document.getElementsByClassName("checkDisplay");
+    for( m = 0; m < ch.length; m ++){
+      ch[m].addEventListener('click', function(){ 
+        setDisplay(this )}, false);
+    }
 
     var existLatitud ;
     // document.getElementById("demo").innerHTML = ya[1].childNodes[0].nodeValue ;
@@ -111,7 +126,10 @@ function loadRentsMarks(){
       });
         //;
         myarray.push(mark);
+
         mark.addListener('click', function() {
+          setCheckedTrue();
+          if(infowindow) infowindow.close();
          // alert(" get position " +mainMarker.getPosition());
          var ad  =  "Address: " + this.get("address") ; 
          var pho =  "Phone: " + this.get("phone") ; 
@@ -120,26 +138,36 @@ function loadRentsMarks(){
          var typ =  "property type: " + this.get("property_type") ; 
          var contentS = "<div><p>" + ad + "<br>" + pho + "<br>" + proN + "<br>" + comp +"<br>"+ typ + "</p></div>";
          //alert(content);          // alert(markerSelect.getPosition());
-         var infowindow = new google.maps.InfoWindow({
+         infowindow = new google.maps.InfoWindow({
           content: contentS
         });
-         infowindow.open(map, this);
          distance(this.getPosition(), mainMarker.getPosition());
          distanceD(this.getPosition(), mainMarker.getPosition());
+         distanceB(this.getPosition(), mainMarker.getPosition());
+         distanceT(this.getPosition(), mainMarker.getPosition());
+         displayRouteCicle(this.getPosition(),mainMarker.getPosition());
          displayRouteDriving(this.getPosition(),mainMarker.getPosition());
+         displayRouteWalking  (this.getPosition(),mainMarker.getPosition());
+         displayRouteTransit(this.getPosition(),mainMarker.getPosition());
+        // markerSelect.setIcon(image);
         // markerSelect.setIcon(image);
          //markerSelect = this;
          black = "styles/icons/Hotel/black/bed_b.png";
         // this.setIcon(black) ;
-        
+        //alert(infowindow);
+
         if(selectOn == 0){
           markerSelect = this;
+          infowindow.open(map, this);
           markerSelect.setIcon(black);
           selectOn = 1;
         }else{
+
           markerSelect.setIcon(image);
           markerSelect = this;
           markerSelect.setIcon(black);
+          infowindow.open(map, this);
+
         }
 
       });
@@ -194,8 +222,8 @@ function distance(originS, destinationS){
         console.log(response.rows[0].elements.distance);
         var dur = response.rows[0].elements[0].duration.text;
         var dist = response.rows[0].elements[0].distance.text;
-        document.getElementById("textDistance").innerHTML = "Distance: " + dist ; 
-        document.getElementById("textWalkTime").innerHTML = "Walking time: " + dur ; 
+        var stringDriving = "Distance: " + dist + "<br>Time: " + dur;  
+        document.getElementById("textWalking").innerHTML = stringDriving;
 
 
             //alert("response" + response.rows[0].elements[0].duration.text );
@@ -217,7 +245,7 @@ function distance(originS, destinationS){
     distanceService.getDistanceMatrix({
       origins: [origin1],
       destinations: [destinationA],
-      travelMode: google.maps.TravelMode.DRIVING,
+      travelMode: google.maps.TravelMode.DRIVING, 
       unitSystem: google.maps.UnitSystem.METRIC,
       durationInTraffic: true,
       avoidHighways: false,
@@ -226,24 +254,181 @@ function distance(originS, destinationS){
     function (response, status) {
       if (status !== google.maps.DistanceMatrixStatus.OK) {
         console.log('Error:', status);
-      } else {
+      } else {            
+        var  cls = document.getElementsByClassName("textS");
+        for ( j = 0 ; j < cls.length ; j++){
+          cls[j].style.visibility = 'visible';  
+        }
         console.log(response.rows[0].elements.distance);
         var dur = response.rows[0].elements[0].duration.text;
-        document.getElementById("textDriveTime").innerHTML = "Driving time: " + dur ; 
-            //alert("response" + response.rows[0].elements[0].duration.text );
-            //alert("response" + response.rows[0].elements[0].distance.text );
-           //$("#distance").text(response.rows[0].elements[0].distance.text).show();
-            //$("#duration").text(response.rows[0].elements[0].duration.text).show();
-          }
-        });
+        var dist = response.rows[0].elements[0].distance.text;
+        var stringDriving = "Distance: " + dist + "<br>Time: " + dur;  
+        document.getElementById("textDriving").innerHTML = stringDriving;
+      }
+    });
+  }
+
+
+
+  function distanceT(originS, destinationS){
+
+  //Find the distance
+    var origin1 = originS; //{lat: 55.93, lng: -3.118} ;
+    var destinationA = destinationS;
+    var distanceService = new google.maps.DistanceMatrixService();
+    distanceService.getDistanceMatrix({
+      origins: [origin1],
+      destinations: [destinationA],
+      travelMode: google.maps.TravelMode.TRANSIT, 
+      unitSystem: google.maps.UnitSystem.METRIC,
+      durationInTraffic: true,
+      avoidHighways: false,
+      avoidTolls: false
+    },
+    function (response, status) {
+      if (status !== google.maps.DistanceMatrixStatus.OK) {
+        console.log('Error:', status);
+      } else {            
+        var  cls = document.getElementsByClassName("textS");
+        for ( j = 0 ; j < cls.length ; j++){
+          cls[j].style.visibility = 'visible';  
+        }
+        console.log(response.rows[0].elements.distance);
+        var dur = response.rows[0].elements[0].duration.text;
+        var dist = response.rows[0].elements[0].distance.text;
+        var stringDriving = "Distance: " + dist + "<br>Time: " + dur;  
+        document.getElementById("textTransit").innerHTML = stringDriving;
+      }
+    });
+  }
+
+
+
+
+  function distanceB(originS, destinationS){
+
+  //Find the distance
+    var origin1 = originS; //{lat: 55.93, lng: -3.118} ;
+    var destinationA = destinationS;
+    var distanceService = new google.maps.DistanceMatrixService();
+    distanceService.getDistanceMatrix({
+      origins: [origin1],
+      destinations: [destinationA],
+      travelMode: google.maps.TravelMode.BICYCLING, 
+      unitSystem: google.maps.UnitSystem.METRIC,
+      durationInTraffic: true,
+      avoidHighways: false,
+      avoidTolls: false
+    },
+    function (response, status) {
+      if (status !== google.maps.DistanceMatrixStatus.OK) {
+        console.log('Error:', status);
+      } else {            
+        var  cls = document.getElementsByClassName("textS");
+        for ( j = 0 ; j < cls.length ; j++){
+          cls[j].style.visibility = 'visible';  
+        }
+        console.log(response.rows[0].elements.distance);
+        var dur = response.rows[0].elements[0].duration.text;
+        var dist = response.rows[0].elements[0].distance.text;
+        var stringDriving = "Distance: " + dist + "<br>Time: " + dur;  
+        document.getElementById("textBicycling").innerHTML = stringDriving;
+      }
+    });
 
 
 
   }
-  function displayRouteDriving(originS, destinationS){
+  function displayRouteWalking(originS, destinationS){
   //Find the distance
-  directionsDisplay.setMap(map);
-  directionsDisplay.setOptions( { suppressMarkers: true } ); 
+  directionsDisplay[2].setMap(map);
+  directionsDisplay[2].setOptions( { suppressMarkers: true } ); 
+  directionsDisplay[2].setOptions( { polylineOptions: { strokeColor: '#EC625F' , 
+   strokeWeight: 6,
+   strokeOpacity: 0.7} } );
+  // quita los marcadores que autmaticamente ponen
+  directionsService.route({
+    origin: originS,
+    destination: destinationS,
+    travelMode: google.maps.TravelMode.WALKING,
+
+  },
+  function (response, status) {
+    if (status !== google.maps.DirectionsStatus.OK) {
+      console.log('Error:', status);
+    } else {
+      directionsDisplay[2].setDirections(response);
+
+    }
+
+
+
+  }
+  );
+
+}
+function displayRouteTransit(originS, destinationS){
+  //Find the distance
+  directionsDisplay[3].setMap(map);
+  directionsDisplay[3].setOptions( { suppressMarkers: true } ); 
+  directionsDisplay[3].setOptions( { polylineOptions: { strokeColor: '#2F1B41' , 
+   strokeWeight: 6,
+   strokeOpacity: 0.7} } );
+  // quita los marcadores que autmaticamente ponen
+  directionsService.route({
+    origin: originS,
+    destination: destinationS,
+    travelMode: google.maps.TravelMode.TRANSIT,
+
+  },
+  function (response, status) {
+    if (status !== google.maps.DirectionsStatus.OK) {
+      console.log('Error:', status);
+    } else {
+      directionsDisplay[3].setDirections(response);
+
+    }
+
+
+
+  }
+  );
+
+}
+
+function displayRouteCicle(originS, destinationS){
+  //Find the distance
+  directionsDisplay[1].setMap(map);
+  directionsDisplay[1].setOptions( { suppressMarkers: true } ); 
+  directionsDisplay[1].setOptions( { polylineOptions: { strokeColor: '#FFCD38' , 
+   strokeWeight: 6,
+   strokeOpacity: 0.7} } );
+  // quita los marcadores que autmaticamente ponen
+  directionsService.route({
+    origin: originS,
+    destination: destinationS,
+    travelMode: google.maps.TravelMode.BICYCLING,
+
+  },
+  function (response, status) {
+    if (status !== google.maps.DirectionsStatus.OK) {
+      console.log('Error:', status);
+    } else {
+      directionsDisplay[1].setDirections(response);
+
+    }
+
+
+
+  }
+  );
+
+}
+
+function displayRouteDriving(originS, destinationS){
+  //Find the distance
+  directionsDisplay[0].setMap(map);
+  directionsDisplay[0].setOptions( { suppressMarkers: true } ); 
   //directionsDisplay.setOptions( { polylineOptions: { strokeColor: "gray" } } );
   // quita los marcadores que autmaticamente ponen
   directionsService.route({
@@ -256,7 +441,7 @@ function distance(originS, destinationS){
     if (status !== google.maps.DirectionsStatus.OK) {
       console.log('Error:', status);
     } else {
-      directionsDisplay.setDirections(response);
+      directionsDisplay[0].setDirections(response);
 
     }
 
@@ -282,3 +467,18 @@ function buttonRentF(){
 
 }
 
+function setCheckedTrue(){
+  for( j = 0; j < ch.length; j++){
+    ch[j].checked = true;
+  }
+}
+function setDisplay(el){
+  //alert(el.checked);
+  //alert(el.value);
+        if(el.checked == true ){
+          directionsDisplay[el.value].setMap(map);
+        }else{
+          directionsDisplay[el.value].setMap(null);
+        }
+
+}
