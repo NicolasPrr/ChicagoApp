@@ -10,14 +10,18 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="js/mapControl.js"></script>
-
+  <script src="js/weather.js"></script>
 
   <link href="https://fonts.googleapis.com/css?family=Share:700" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="styles/stylesLoginf.css">
   <link rel="stylesheet" type="text/css" href="styles/responsive.css">
   <link rel="stylesheet" type="text/css" href="styles/buttons.css">
   <link rel="stylesheet" type="text/css" href="styles/leftColumn.css">
-  <style>
+  
+  <link rel="stylesheet" href="styles/iconWeather/pe-icon-set-weather/css/helper.css">
+  <link rel="stylesheet" href="styles/iconWeather/pe-icon-set-weather/css/pe-icon-set-weather.css">
+
+  <style> 
     .carousel-inner > .item > img,
     .carousel-inner > .item > a > img {
       width: 70%;
@@ -39,6 +43,7 @@
           </ul>
         </li>
       </ul>
+      
     </div>
   </nav>
 
@@ -46,31 +51,109 @@
   <div class = "container-fluid text-center">
     <div class ="row content">
       <div class="col-sm-2 sidenav">
-        <button id ="rentButton" class="button buttonMarker" onclick="buttonRentF();">
-
-         <button id ="parkButton" class="button buttonMarker">
-          <dd>Hola maria</dd>
-          <button id ="retButton" class="button buttonMarker">
-            <dd>Hola maria</dd>
-            <button id ="renutton" class="button buttonMarker">
-              <dd>Hola maria</dd> 
-            </button>
+      <label for="sel1">Select the distance from university (km).<br>
+          please, click hide and show.</label>  
 
 
+          <button id ="rentButton" class="button buttonMarker" onclick="buttonRentF();"></button>
 
-          </div>
-          <div class ="col-sm-8 text-left">
 
-            <div class="container">
-              <div id="map_container">
-                <div id="googleMap" ></div>    
+          <form class="form-group form-group-sm">
+
+            <select class="form-control " id="sel1">
+
+              <option>5</option>
+              <option>10</option>
+              <option>15</option>
+              <option>20</option>
+              <option>25</option>
+              <option>30</option>
+            </select> 
+          </form>
+          <button id ="libraryButton" class="button buttonMarker" onclick="buttonLibraries()">
+            <dd>Show libraries</dd></button>
+            <form class="form-group form-group-sm">
+              <select class="form-control" id="sel2">
+                <option>5</option>
+                <option>10</option>
+                <option>15</option>
+                <option>20</option>
+                <option>25</option>
+                <option>30</option>
+
+              </select> 
+            </form>
+            <button id ="ParkButton" class="button buttonMarker" onclick="buttonPark()">
+              <dd>Show parks</dd></button>
+              <form class="form-group form-group-sm">
+                <select class="form-control" id="sel3">
+
+                  <option>5</option>
+                  <option>10</option>
+                  <option>15</option>
+                  <option>20</option>
+                  <option>25</option>
+                  <option>30</option>
+
+                </select> 
+              </form>
+
+               <button id ="PoliceButton" class="button buttonMarker" onclick="buttonPolice()"> 
+                  <dd>Show Police stations</dd> </button>
+              <form class="form-group form-group-sm">
+               
+                </button> 
+                <select class="form-control" id="sel4">
+
+                  <<option>5</option>
+                  <option>10</option>
+                  <option>15</option>
+                  <option>20</option>
+                  <option>25</option>
+                  <option>30</option>
+                </select> 
+              </form>
+
+
+
+            </form>
+
+
+
+
+            
+
+
+            </div>
+
+            <div class ="col-sm-8 text-left">
+
+
+              <div class="container">
+                <div id="map_container">
+                  <div id="googleMap" ></div>    
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-sm-2 sidenav text-left">
 
-            <dd class ="textS" ><b>Distance, time, and routes <br></b></dd>
-            <ul class ="list-group textS">
+            <div class="col-sm-2 sidenav text-left">
+              <ul class = "list-group" style="padding-top: 0px; padding-left:  10px" >
+              <li class= "list-group-item">
+                <dd id = "textClime"> weather </dd>
+              </li>
+              <li class = "list-group-item"> 
+
+                <div class = "container-fluid" >
+                  <dd id ="text_weather"></dd>
+                  <p><i id= "imgWeather" class = "pe-is-w-rain-1" ></i></p>
+
+                </li>
+              </ul>
+
+
+             <dd class ><b>Select some rent. <br></b></dd>
+             <dd class ="textS" ><b>Distance, time, and routes <br></b></dd>
+             <ul class ="list-group textS">
               <li class ="list-group-item">
 
                <dd class ="textS text-center" style="background: #0088FF"><b>Driving</b><input type="checkbox" id ="checkDriving" class="checkDisplay" style="float: right;" value = "0"></dd>
@@ -99,7 +182,7 @@
           </ul>
 
 
-          
+
 
         </div>
 
@@ -107,7 +190,7 @@
       </div>
     </div>
 
-    <script type="text/javascript"  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDO3BlysYt5W2YxWN6ohNE0ep5XKjnuWnU&callback=myMap&libraries=places&v=3"></script>
+    <script type="text/javascript"  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDO3BlysYt5W2YxWN6ohNE0ep5XKjnuWnU&callback=myMap&libraries=places&libraries=geometry&v=3"></script>
     <script>
 
 

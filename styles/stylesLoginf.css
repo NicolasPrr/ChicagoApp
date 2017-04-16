@@ -108,7 +108,7 @@
 
 
  #googleMap{
-  height: 600px;
+  height: 580px;
    position: relative;
    
  }
@@ -122,5 +122,14 @@
 
 #map_container{
   position: relative;
+
+}
+.iconRent{
+   display: block;
+   background-image: url("icons/hotel/bed.png");
+    width: 30px;
+  height: 33px; 
+
+
 
 }
