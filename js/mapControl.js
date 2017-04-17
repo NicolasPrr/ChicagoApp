@@ -105,7 +105,7 @@ function deleteMarkers(markersArray) {
 
       var existLatitud ;
       // document.getElementById("demo").innerHTML = ya[1].childNodes[0].nodeValue ;
-      var idCount = 1;
+      
       var mark;
       var image = "styles/icons/Hotel/bed.png"  
     //here i add the markes with some features
@@ -114,6 +114,12 @@ function deleteMarkers(markersArray) {
       if(numberT != 0){
         latituds = x[i].getElementsByTagName("latitude")[0].childNodes[0].nodeValue;
         longituds = x[i].getElementsByTagName("longitude")[0].childNodes[0].nodeValue;
+        //community_area = x[i].getElementsByTagName("community_area_number")[0].childNodes[0].nodeValue;
+        var community_area = 0;
+        //console.log(i + " : "+x[i].getElementsByTagName("community_area_number").length);
+        if( x[i].getElementsByTagName("community_area_number").length != 0){
+          community_area = x[i].getElementsByTagName("community_area_number")[0].childNodes[0].nodeValue;          
+        }
         dr = x[i].getElementsByTagName("address")[0].childNodes[0].nodeValue;
         phone = x[i].getElementsByTagName("phone_number")[0].childNodes[0].nodeValue;
         property_name = x[i].getElementsByTagName("property_name")[0].childNodes[0].nodeValue;
@@ -123,9 +129,10 @@ function deleteMarkers(markersArray) {
 
         var mark = new google.maps.Marker({       
           position : {lat: Number(latituds), lng : Number(longituds)},
-          id_rent: idCount,
+          id_area: community_area,
           property_type : property_types,
           property_name : property_name,
+          number_crimes: "click again",
           company: company,
           //type: "Rent house",
           phone :  phone,
@@ -144,8 +151,11 @@ function deleteMarkers(markersArray) {
            var pho =  "Phone: " + this.get("phone") ; 
            var proN = "property name: " + this.get("property_name") ; 
            var comp = "Compañy: " + this.get("company") ; 
-           var typ =  "property type: " + this.get("property_type") ; 
-           var contentS = "<div><p>" + ad + "<br>" + pho + "<br>" + proN + "<br>" + comp +"<br>"+ typ + "</p></div>";
+           var typ =  "property type: " + this.get("property_type") ;
+           crimes(this.get("id_area"), this );
+
+           //var crimes = "Crimes in 2017: " +  
+           var contentS = "<div><p>" + ad + "<br>" + pho + "<br>" + proN + "<br>" + comp +"<br>"+ typ + "<br>Crimes in community this year: "+ this.get("number_crimes") + "</p></div>";
            //alert(content);          // alert(markerSelect.getPosition());
            infowindow = new google.maps.InfoWindow({
             content: contentS
@@ -198,7 +208,7 @@ function deleteMarkers(markersArray) {
       //document.getElementById("demo").innerHTML = i;
     } 
   }; xhttp.open("GET",url, true);
-  xhttp.send();
+  xhttp.send(); 
 
 }
 function loadPoliceMarks() {
@@ -872,7 +882,24 @@ function deleteMarkersD(markersArray, distanceN) {
 
   }
 
+function crimes(community_area_number, markerC){
+  $.ajax({
+    url: 'https://data.cityofchicago.org/resource/6zsd-86xi.json?$query=SELECT community_area, count(community_area) WHERE community_area = \'' + community_area_number + '\' AND year = 2017 GROUP BY community_area',
+    type: "GET",
+    data: {
+      "$$app_token" : "ONMw6rs4vX99YkE7M5cOetVo9"
+  }
+  }).done(function(data) {
+    if (community_area_number != undefined) {
 
+      markerC.setOptions({number_crimes: data[0].count_community_area });
+
+    } else {
+      //document.getElementById("crimes-2017").innerHTML = "<b>Number of crimes in 2017 in the community</b>: undefined";
+       markerC.setOptions({number_crimes: undefined });
+    }
+  });
+}
 
 
 
